@@ -63,6 +63,26 @@ public class RecipeController {
 
     }
 
+    // 나의 찜목록에서 레시피 상세 요청
+    @GetMapping("detail/{name}")
+    public ResponseEntity<?> getRecipe(@AuthenticationPrincipal TokenUserInfo userInfo,
+                                       @PathVariable String name){
+        try {
+//            URLEncoder.encode(category, "UTF-8");
+            log.info("/api/menu/recipe/detail/{} - GET Mypage Recipe Detail Request"
+                    ,name);
+            Map<String, Object> responseDTO =recipeService.getRecipe(name);
+
+
+            return ResponseEntity.ok().body(responseDTO);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+
+    }
+
+
     // 좋아요 기능
     @PostMapping("/like")
     public ResponseEntity<?> insert(@AuthenticationPrincipal TokenUserInfo userInfo,
